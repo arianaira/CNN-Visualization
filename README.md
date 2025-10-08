@@ -1,7 +1,8 @@
 # Report: Experimentation with CNN Architectures and Visualization Techniques  
 
-## Abstract  
+## Abstract   
 Convolutional Neural Networks (CNNs) have proven to be powerful tools for solving various image classification problems. This study explores different CNN architectures and visualizes what the trained CNN model perceives at each convolutional layer. Additionally, the model is utilized as an image generator to experiment with generating images of specific classes.  
+
 ---  
 
 ## Introduction  
