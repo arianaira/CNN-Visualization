@@ -1,1 +1,149 @@
-# CNN-Visualization
+# Report: Experimentation with CNN Architectures and Visualization Techniques  
+
+## Abstract  
+Convolutional Neural Networks (CNNs) have proven to be powerful tools for solving various image classification problems. This study explores different CNN architectures and visualizes what the trained CNN model perceives at each convolutional layer. Additionally, the model is utilized as an image generator to experiment with generating images of specific classes.  
+
+## Table of Contents  
+1. [Introduction](#introduction)  
+2. [Methods](#methods)  
+3. [Model Architecture](#model-architecture)  
+4. [Training](#training)  
+5. [Visualization](#visualization)  
+6. [Image Generation](#image-generation)  
+7. [Improvements](#improvements)  
+8. [Conclusion](#conclusion)  
+
+---  
+
+## Introduction  
+The task involves:  
+1. Preprocessing the **Architectural Heritage Elements Image64 Dataset**.  
+2. Designing a simple CNN model to classify 10 classes in the dataset.  
+3. Enhancing the model for visualizing feature maps of convolution layers.  
+4. Using the trained model as an image generator.  
+
+---
+
+## Methods  
+The following preprocessing steps were applied to the dataset:  
+1. **Resizing** all images to 224x224.  
+2. Applying **ColorJitter** to modify brightness, contrast, saturation, and hue randomly.  
+3. Enabling **horizontal flipping** for augmentation.  
+4. Converting images to **tensors**.  
+5. **Normalizing** images with:  
+   - Mean: `[0.485, 0.456, 0.406]`  
+   - Std: `[0.229, 0.224, 0.225]`  
+
+### Dataset Overview  
+The dataset consists of 10 classes with the following sample counts:  
+
+| Class             | Images |
+|-------------------|--------|
+| Altar            | 828    |
+| Apse             | 505    |
+| Bell Tower       | 1057   |
+| Column           | 1914   |
+| Dome (Inner)     | 589    |
+| Dome (Outer)     | 1175   |
+| Flying Buttress  | 405    |
+| Gargoyle         | 1562   |
+| Stained Glass    | 998    |
+| Vault            | 1097   |
+
+> **Note**: The dataset is balanced, as all classes have similar sample sizes.  
+
+---
+
+## Model Architecture  
+The CNN model, named `Net`, is structured as follows:  
+
+### Convolutional Layers   
+- 3 convolutional layers:  
+  - Input channels: 3 (RGB).  
+  - Output channels: 12 (for each layer).  
+  - Kernel size: `(3, 3)`.  
+  - Stride: `(2, 2)`.  
+  - Padding: `(1, 1)`.  
+
+### Pooling and Flattening  
+- **MaxPooling** layer with kernel size 2 reduces dimensionality.  
+- Final convolutional output shape: `32 x 2352` (batch size x features).  
+
+### Fully Connected Layers  
+- First linear layer: `2352` → `512` neurons (with 20% dropout).  
+- Second linear layer: `512` → `256` neurons.  
+- Output layer: `256` → `10` classes.  
+
+### Activation Functions  
+- **ReLU** is used across all layers.   
+
+### Optimization and Loss Function  
+- **Optimizer**: Adam.  
+- **Loss Function**: Cross-Entropy Loss.  
+
+### Model Summary  
+```plaintext  
+Net(  
+  (conv1): Conv2d(3, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+  (conv2): Conv2d(12, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+  (conv3): Conv2d(12, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+  (cnn_layers): Sequential(  
+    (0): Conv2d(3, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+    (1): ReLU(inplace=True)  
+    (2): Conv2d(12, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+    (3): ReLU(inplace=True) 
+    (4): Conv2d(12, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
+    (5): ReLU(inplace=True)    
+    (6): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)   
+    (7): Flatten(start_dim=1, end_dim=-1)   
+  )  
+  (linear_layers): Sequential(   
+    (0): Linear(in_features=2352, out_features=512, bias=True)  
+    (1): ReLU()  
+    (2): Dropout(p=0.2, inplace=False)  
+    (3): Linear(in_features=512, out_features=256, bias=True)  
+    (4): ReLU()  
+    (5): Linear(in_features=256, out_features=10, bias=True)  
+  )  
+)
+--- 
+### Training  
+The model was trained for 20 epochs with the following results:  
+
+Epoch	Loss	Accuracy   
+1	1.5460	43.01%  
+5	0.7741	72.86%  
+10	0.4202	85.44%  
+15	0.2390	91.75%  
+20	0.1222	95.75%  
+Test Accuracy  
+Train Accuracy: 95%  
+Test Accuracy: 69.09%  
+Observation: The model is overfitted, with a variance of ~35% between train and test accuracy.   
+
+## Visualization  
+To visualize feature maps:  
+
+Feed an image into the first convolution layer.  
+Obtain and plot the feature map's output channels as images.  
+Repeat for subsequent layers by feeding the ReLU activation of the feature maps.  
+### Key Observations  
+First Layer: Captures basic features (edges, textures).  
+Deeper Layers: Extract more specific features.  
+### Example Visualization  
+<img width="516" height="411" alt="image" src="https://github.com/user-attachments/assets/e41e1f15-b736-4fbe-ad98-9a334ff2d2ef" />
+<img width="516" height="411" alt="image" src="https://github.com/user-attachments/assets/18413f89-f951-406e-9cfd-89c588e4bd57" />
+<img width="516" height="411" alt="image" src="https://github.com/user-attachments/assets/e1671bb4-55e2-49f4-884b-5bfeafac3a08" />
+
+## Image Generation  
+Using the trained CNN, an image can be generated by:  
+
+Taking the output of the last convolutional layer (feature map 3).    
+Applying transposed convolution with the transposed weights of the layer.  
+Feeding it backward through the network to generate a new image for the given class.  
+### Example Output  
+#### Original Image
+<img width="425" height="417" alt="image" src="https://github.com/user-attachments/assets/07b9c120-8188-4949-bf81-c836cd0bfe0a" />
+#### Generated Image
+<img width="416" height="415" alt="image" src="https://github.com/user-attachments/assets/7133106a-2fb5-4341-a2b4-48a81ee9aa1e" />
+
