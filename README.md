@@ -131,7 +131,7 @@ Applying transposed convolution with the transposed weights of the layer.
 Feeding it backward through the network to generate a new image for the given class.  
 ### Example Output  
 #### Original Image
-<img width="425" height="417" alt="image" src="https://github.com/user-attachments/assets/07b9c120-8188-4949-bf81-c836cd0bfe0a" />
-#### Generated Image
-<img width="416" height="415" alt="image" src="https://github.com/user-attachments/assets/7133106a-2fb5-4341-a2b4-48a81ee9aa1e" />
+<img width="425" height="417" alt="image" src="https://github.com/user-attachments/assets/07b9c120-8188-4949-bf81-c836cd0bfe0a" />   
+#### Generated Image  
+<img width="416" height="415" alt="image" src="https://github.com/user-attachments/assets/7133106a-2fb5-4341-a2b4-48a81ee9aa1e" />  
 
