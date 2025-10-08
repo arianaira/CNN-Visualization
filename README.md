@@ -2,17 +2,6 @@
 
 ## Abstract  
 Convolutional Neural Networks (CNNs) have proven to be powerful tools for solving various image classification problems. This study explores different CNN architectures and visualizes what the trained CNN model perceives at each convolutional layer. Additionally, the model is utilized as an image generator to experiment with generating images of specific classes.  
-
-## Table of Contents  
-1. [Introduction](#introduction)  
-2. [Methods](#methods)  
-3. [Model Architecture](#model-architecture)  
-4. [Training](#training)  
-5. [Visualization](#visualization)  
-6. [Image Generation](#image-generation)  
-7. [Improvements](#improvements)  
-8. [Conclusion](#conclusion)  
-
 ---  
 
 ## Introduction  
@@ -81,8 +70,7 @@ The CNN model, named `Net`, is structured as follows:
 - **Optimizer**: Adam.  
 - **Loss Function**: Cross-Entropy Loss.  
 
-### Model Summary  
-```plaintext  
+### Model Summary    
 Net(  
   (conv1): Conv2d(3, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
   (conv2): Conv2d(12, 12, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))  
@@ -105,8 +93,8 @@ Net(
     (4): ReLU()  
     (5): Linear(in_features=256, out_features=10, bias=True)  
   )  
-)
---- 
+)  
+
 ### Training  
 The model was trained for 20 epochs with the following results:  
 
